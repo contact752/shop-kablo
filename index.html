@@ -20,6 +20,7 @@
 
   a.logo-link {
     text-decoration: none;
+    display: inline-block;
   }
 
   .logo {
@@ -58,9 +59,7 @@
     z-index: 2;
   }
 
-  .unmute-btn:hover {
-    opacity: 1;
-  }
+  .unmute-btn:hover { opacity: 1; }
 
   .unmute-btn svg {
     width: 18px;
@@ -71,7 +70,7 @@
   }
 
   .counter-container {
-    margin-bottom: 10px;
+    margin-bottom: 25px;
     font-size: 0.875rem;
     padding: 0 15px;
   }
@@ -87,32 +86,22 @@
     left: 0;
     height: 1px;
     width: 100%;
-    background: #fff;
+    background: linear-gradient(90deg, rgba(255,255,255,0.3), #fff);
     transform: scaleX(0);
     transform-origin: left center;
     animation: lineGrow 4s ease-in-out infinite;
   }
 
   @keyframes lineGrow {
-    from { transform: scaleX(0); opacity: 1; }
-    90% { transform: scaleX(1); opacity: 1; }
-    to { transform: scaleX(1); opacity: 0; }
+    from { transform: scaleX(0); opacity: 0.3; }
+    90%  { transform: scaleX(1); opacity: 1; }
+    to   { transform: scaleX(1); opacity: 0.3; }
   }
 
   .contact {
     font-size: 0.875rem;
     margin-bottom: 60px;
     padding: 0 15px;
-  }
-
-  .flash {
-    animation: flashEffect 0.4s ease;
-  }
-
-  @keyframes flashEffect {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
   }
 
   @media (max-width: 1024px) {
@@ -164,21 +153,16 @@
     // --- Counter Logic ---
     let count = 312439999;
     const counterElement = document.getElementById("counter");
-
     setInterval(() => {
       count++;
       counterElement.textContent = count.toLocaleString();
-      counterElement.classList.add("flash");
-      setTimeout(() => counterElement.classList.remove("flash"), 400);
     }, 4000);
 
     // --- YouTube API Control ---
     let player;
     function onYouTubeIframeAPIReady() {
       player = new YT.Player("kabloVideo", {
-        events: {
-          onReady: () => player.mute()
-        }
+        events: { onReady: () => player.mute() }
       });
     }
 
@@ -190,7 +174,6 @@
 
     // --- Unmute Button Logic ---
     const unmuteBtn = document.getElementById("unmuteBtn");
-
     unmuteBtn.addEventListener("click", () => {
       if (player) {
         player.unMute();
