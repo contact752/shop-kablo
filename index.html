@@ -18,10 +18,15 @@
     text-align: center;
   }
 
+  a.logo-link {
+    text-decoration: none;
+  }
+
   .logo {
     width: 10%;
     max-width: 150px;
     margin-top: 40px;
+    cursor: pointer;
   }
 
   .video-container {
@@ -58,8 +63,8 @@
   }
 
   .unmute-btn svg {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
     stroke: #fff;
     fill: none;
     stroke-width: 2;
@@ -121,12 +126,14 @@
 </style>
 </head>
 <body>
-  <img src="logo.svg" alt="Kablo Logo" class="logo" />
+  <a href="/" class="logo-link">
+    <img src="logo.svg" alt="Kablo Logo" class="logo" />
+  </a>
 
   <div class="video-container">
     <iframe
       id="kabloVideo"
-      src="https://www.youtube.com/embed/-1fuLRMWKOY?autoplay=1&mute=1&loop=1&playlist=-1fuLRMWKOY&controls=0&modestbranding=1&showinfo=0&rel=0"
+      src="https://www.youtube.com/embed/-1fuLRMWKOY?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=-1fuLRMWKOY&controls=0&modestbranding=1&showinfo=0&rel=0"
       allow="autoplay; encrypted-media"
       allowfullscreen>
     </iframe>
@@ -140,22 +147,22 @@
   </div>
 
   <div class="counter-container">
-    To date, we’ve diverted over 
+    Over 
     <span class="number-wrapper">
-      <span id="counter">312,439,984</span>
+      <span id="counter">312,439,999</span>
       <div class="underline"></div>
-    </span> 
-    plastic bottles from entering landfills.
+    </span>
+    plastic bottles prevented from reaching landfills.
   </div>
 
   <div class="contact">
-    For wholesale partnership inquiries, email
+    Interested in wholesale? Email
     <a href="mailto:contact@shopkablo.com" style="color:#fff;text-decoration:none;">contact@shopkablo.com</a>
   </div>
 
   <script>
     // --- Counter Logic ---
-    let count = 312439984;
+    let count = 312439999;
     const counterElement = document.getElementById("counter");
 
     setInterval(() => {
@@ -165,13 +172,30 @@
       setTimeout(() => counterElement.classList.remove("flash"), 400);
     }, 4000);
 
+    // --- YouTube API Control ---
+    let player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("kabloVideo", {
+        events: {
+          onReady: () => player.mute()
+        }
+      });
+    }
+
+    // Inject YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
     // --- Unmute Button Logic ---
     const unmuteBtn = document.getElementById("unmuteBtn");
-    const iframe = document.getElementById("kabloVideo");
 
     unmuteBtn.addEventListener("click", () => {
-      const videoSrc = iframe.src.replace("mute=1", "mute=0");
-      iframe.src = videoSrc;
+      if (player) {
+        player.unMute();
+        player.playVideo();
+      }
       unmuteBtn.style.transition = "opacity 2s ease";
       unmuteBtn.style.opacity = "0";
       setTimeout(() => unmuteBtn.style.display = "none", 2000);
