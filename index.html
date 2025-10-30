@@ -67,37 +67,56 @@
 
   .counter-container {
     margin-bottom: 10px;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
+    padding: 0 15px;
+  }
+
+  .number-wrapper {
+    display: inline-block;
+    position: relative;
   }
 
   .underline {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
     height: 1px;
-    width: 0%;
+    width: 100%;
     background: #fff;
-    margin: 5px auto 25px;
-    animation: lineGrow 4s linear infinite;
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: lineGrow 4s ease-in-out infinite;
   }
 
   @keyframes lineGrow {
-    from { width: 0%; opacity: 1; }
-    90% { width: 100%; opacity: 1; }
-    to { width: 100%; opacity: 0; }
+    from { transform: scaleX(0); opacity: 1; }
+    90% { transform: scaleX(1); opacity: 1; }
+    to { transform: scaleX(1); opacity: 0; }
   }
 
   .contact {
     font-size: 0.875rem;
     margin-bottom: 60px;
+    padding: 0 15px;
   }
 
-  /* Responsive adjustments */
+  .flash {
+    animation: flashEffect 0.4s ease;
+  }
+
+  @keyframes flashEffect {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+
   @media (max-width: 1024px) {
     .logo { width: 14%; max-width: 160px; }
-    .contact { font-size: 0.85rem; }
   }
 
   @media (max-width: 600px) {
     .logo { width: 22%; max-width: 130px; }
-    .contact { font-size: 0.8rem; padding: 0 15px; }
+    .counter-container, .contact { font-size: 0.8rem; padding: 0 20px; }
   }
 </style>
 </head>
@@ -121,8 +140,12 @@
   </div>
 
   <div class="counter-container">
-    To date, we’ve diverted over <span id="counter">312,439,984</span> plastic bottles from entering landfills.
-    <div class="underline"></div>
+    To date, we’ve diverted over 
+    <span class="number-wrapper">
+      <span id="counter">312,439,984</span>
+      <div class="underline"></div>
+    </span> 
+    plastic bottles from entering landfills.
   </div>
 
   <div class="contact">
@@ -134,20 +157,21 @@
     // --- Counter Logic ---
     let count = 312439984;
     const counterElement = document.getElementById("counter");
+
     setInterval(() => {
       count++;
       counterElement.textContent = count.toLocaleString();
+      counterElement.classList.add("flash");
+      setTimeout(() => counterElement.classList.remove("flash"), 400);
     }, 4000);
 
     // --- Unmute Button Logic ---
     const unmuteBtn = document.getElementById("unmuteBtn");
     const iframe = document.getElementById("kabloVideo");
-    const speakerIcon = document.getElementById("speakerIcon");
 
     unmuteBtn.addEventListener("click", () => {
       const videoSrc = iframe.src.replace("mute=1", "mute=0");
       iframe.src = videoSrc;
-      // Animate and fade out icon
       unmuteBtn.style.transition = "opacity 2s ease";
       unmuteBtn.style.opacity = "0";
       setTimeout(() => unmuteBtn.style.display = "none", 2000);
