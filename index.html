@@ -122,13 +122,22 @@
   </div>
 
   <script>
-    // --- Counter Logic ---
-    let count = 312440000;
+    // --- Continuous Counter Logic ---
+    const baseCount = 312440000; // starting number
+    const startDate = new Date('2024-01-01T00:00:00Z'); // date when counting started (UTC)
+    const ratePerSecond = 0.25; // growth rate — 1 bottle every 4 seconds
+
     const counterElement = document.getElementById("counter");
-    setInterval(() => {
-      count++;
-      counterElement.textContent = count.toLocaleString();
-    }, 4000);
+
+    function updateCounter() {
+      const now = new Date();
+      const secondsSinceStart = Math.floor((now - startDate) / 1000);
+      const totalCount = baseCount + secondsSinceStart * ratePerSecond;
+      counterElement.textContent = Math.floor(totalCount).toLocaleString();
+    }
+
+    updateCounter();
+    setInterval(updateCounter, 1000);
   </script>
 </body>
 </html>
