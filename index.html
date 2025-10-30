@@ -20,12 +20,13 @@
 
   a.logo-link {
     text-decoration: none;
-    display: inline-block;
+    display: block;
   }
 
   .logo {
-    width: 10%;
-    max-width: 150px;
+    display: block;
+    height: auto;
+    width: 150px;
     margin-top: 40px;
     cursor: pointer;
   }
@@ -70,7 +71,7 @@
   }
 
   .counter-container {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     font-size: 0.875rem;
     padding: 0 15px;
   }
@@ -105,11 +106,11 @@
   }
 
   @media (max-width: 1024px) {
-    .logo { width: 14%; max-width: 160px; }
+    .logo { width: 160px; }
   }
 
   @media (max-width: 600px) {
-    .logo { width: 22%; max-width: 130px; }
+    .logo { width: 130px; }
     .counter-container, .contact { font-size: 0.8rem; padding: 0 20px; }
   }
 </style>
@@ -138,10 +139,10 @@
   <div class="counter-container">
     Over 
     <span class="number-wrapper">
-      <span id="counter">312,439,999</span>
+      <span id="counter">312,440,000</span>
       <div class="underline"></div>
     </span>
-    plastic bottles prevented from reaching landfills.
+    plastic bottles saved from landfills.
   </div>
 
   <div class="contact">
@@ -151,7 +152,7 @@
 
   <script>
     // --- Counter Logic ---
-    let count = 312439999;
+    let count = 312440000;
     const counterElement = document.getElementById("counter");
     setInterval(() => {
       count++;
