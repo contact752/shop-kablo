@@ -26,7 +26,7 @@
   .logo {
     display: block;
     height: auto;
-    width: 115px; /* was 150px */
+    width: 100px; /* reduced from 115px */
     margin-top: 40px;
     cursor: pointer;
   }
@@ -46,28 +46,6 @@
     width: 100%;
     height: 100%;
     border: none;
-  }
-
-  .unmute-btn {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-    z-index: 2;
-  }
-
-  .unmute-btn:hover { opacity: 1; }
-
-  .unmute-btn svg {
-    width: 18px;
-    height: 18px;
-    stroke: #fff;
-    fill: none;
-    stroke-width: 2;
   }
 
   .counter-container {
@@ -106,11 +84,11 @@
   }
 
   @media (max-width: 1024px) {
-    .logo { width: 125px; } /* was 160px */
+    .logo { width: 110px; }
   }
 
   @media (max-width: 600px) {
-    .logo { width: 100px; } /* was 130px */
+    .logo { width: 85px; }
     .counter-container, .contact { font-size: 0.8rem; padding: 0 20px; }
   }
 </style>
@@ -123,17 +101,10 @@
   <div class="video-container">
     <iframe
       id="kabloVideo"
-      src="https://www.youtube.com/embed/-1fuLRMWKOY?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=-1fuLRMWKOY&controls=0&modestbranding=1&showinfo=0&rel=0"
+      src="https://www.youtube.com/embed/-1fuLRMWKOY?autoplay=1&mute=1&loop=1&playlist=-1fuLRMWKOY&controls=0&modestbranding=1&showinfo=0&rel=0"
       allow="autoplay; encrypted-media"
       allowfullscreen>
     </iframe>
-
-    <button id="unmuteBtn" class="unmute-btn" aria-label="Unmute video">
-      <svg id="speakerIcon" viewBox="0 0 24 24">
-        <path d="M4 9v6h4l5 5V4L8 9H4z"></path>
-        <path id="soundWaves" d="M16 8.82a4 4 0 010 6.36M18.36 6.36a8 8 0 010 11.28" />
-      </svg>
-    </button>
   </div>
 
   <div class="counter-container">
@@ -158,32 +129,6 @@
       count++;
       counterElement.textContent = count.toLocaleString();
     }, 4000);
-
-    // --- YouTube API Control ---
-    let player;
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player("kabloVideo", {
-        events: { onReady: () => player.mute() }
-      });
-    }
-
-    // Inject YouTube IFrame API
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    // --- Unmute Button Logic ---
-    const unmuteBtn = document.getElementById("unmuteBtn");
-    unmuteBtn.addEventListener("click", () => {
-      if (player) {
-        player.unMute();
-        player.playVideo();
-      }
-      unmuteBtn.style.transition = "opacity 2s ease";
-      unmuteBtn.style.opacity = "0";
-      setTimeout(() => unmuteBtn.style.display = "none", 2000);
-    });
   </script>
 </body>
 </html>
