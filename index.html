@@ -83,11 +83,11 @@
       padding: 0 15px;
     }
 
-    /* Clean icon only, no background */
+    /* speaker icon */
     .sound-toggle {
       position: absolute;
-      bottom: 12px;
-      right: 12px;
+      bottom: 14px;
+      right: 14px;
       cursor: pointer;
       transition: opacity 0.3s ease;
       opacity: 0.85;
@@ -126,10 +126,10 @@
       allowfullscreen>
     </iframe>
 
-    <!-- Speaker icon for toggling sound -->
+    <!-- Speaker icon -->
     <div class="sound-toggle" onclick="toggleMute()">
       <svg id="soundIcon" viewBox="0 0 24 24" aria-hidden="true">
-        <!-- Clean muted icon -->
+        <!-- Muted icon -->
         <path d="M5 9v6h4l5 5V4l-5 5H5z"></path>
       </svg>
     </div>
@@ -154,8 +154,8 @@
     const baseCount = 312440000;
     const startDate = new Date('2024-01-01T00:00:00Z');
     const ratePerSecond = 0.25;
-
     const counterElement = document.getElementById("counter");
+
     function updateCounter() {
       const now = new Date();
       const secondsSinceStart = Math.floor((now - startDate) / 1000);
@@ -180,8 +180,7 @@
         player.unMute();
         icon.innerHTML = `
           <path d="M5 9v6h4l5 5V4l-5 5H5z"></path>
-          <path d="M16 7c1.66 1.26 2.5 3.02 2.5 5s-.84 3.74-2.5 5"></path>
-          <path d="M19 4c2.76 2.1 4.5 5.02 4.5 8s-1.74 5.9-4.5 8"></path>
+          <path d="M16 12c0-1.5-.75-3-2-4v8c1.25-1 2-2.5 2-4z"></path>
         `;
       } else {
         player.mute();
@@ -191,6 +190,7 @@
       }
     }
 
+    // Load YouTube IFrame Player API
     (function() {
       const tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
