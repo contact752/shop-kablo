@@ -85,23 +85,23 @@
       padding: 0 15px;
     }
 
-    /* speaker icon style */
+    /* speaker icon inside video */
     .sound-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(255,255,255,0.2);
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.4);
       border-radius: 50%;
-      padding: 10px;
+      padding: 7px;
       cursor: pointer;
       transition: background 0.3s;
     }
     .sound-toggle:hover {
-      background: rgba(255,255,255,0.4);
+      background: rgba(0, 0, 0, 0.7);
     }
     .sound-toggle svg {
-      width: 24px;
-      height: 24px;
+      width: 17px; /* 30% smaller than original 24px */
+      height: 17px;
       fill: #fff;
     }
 
@@ -127,6 +127,15 @@
       allow="autoplay; encrypted-media"
       allowfullscreen>
     </iframe>
+
+    <!-- Speaker icon for toggling sound -->
+    <div class="sound-toggle" onclick="toggleMute()">
+      <svg id="soundIcon" viewBox="0 0 24 24" aria-hidden="true">
+        <!-- Default muted icon -->
+        <path d="M3 9v6h4l5 5V4L7 9H3z"></path>
+        <path d="M16.5 12c0-1.77-.77-3.37-2-4.47v8.94c1.23-1.1 2-2.7 2-4.47zM14.5 3.23v2.06c2.89 1.07 5 3.9 5 7.71s-2.11 6.64-5 7.71v2.06c4.01-1.19 7-5 7-9.77s-2.99-8.58-7-9.77z"></path>
+      </svg>
+    </div>
   </div>
 
   <div class="counter-container">
@@ -143,30 +152,19 @@
     <a href="mailto:contact@shopkablo.com" style="color:#fff;text-decoration:none;">contact@shopkablo.com</a>
   </div>
 
-  <!-- Speaker icon for toggling sound -->
-  <div class="sound-toggle" onclick="toggleMute()">
-    <svg id="soundIcon" viewBox="0 0 24 24" aria-hidden="true">
-      <!-- Default muted icon -->
-      <path d="M3 9v6h4l5 5V4L7 9H3z"></path>
-      <path d="M16.5 12c0-1.77-.77-3.37-2-4.47v8.94c1.23-1.1 2-2.7 2-4.47zM14.5 3.23v2.06c2.89 1.07 5 3.9 5 7.71s-2.11 6.64-5 7.71v2.06c4.01-1.19 7-5 7-9.77s-2.99-8.58-7-9.77z"></path>
-    </svg>
-  </div>
-
   <script>
     // --- Continuous Counter Logic ---
-    const baseCount = 312440000; // starting number
-    const startDate = new Date('2024-01-01T00:00:00Z'); // date when counting started (UTC)
-    const ratePerSecond = 0.25; // growth rate — 1 bottle every 4 seconds
+    const baseCount = 312440000;
+    const startDate = new Date('2024-01-01T00:00:00Z');
+    const ratePerSecond = 0.25;
 
     const counterElement = document.getElementById("counter");
-
     function updateCounter() {
       const now = new Date();
       const secondsSinceStart = Math.floor((now - startDate) / 1000);
       const totalCount = baseCount + secondsSinceStart * ratePerSecond;
       counterElement.textContent = Math.floor(totalCount).toLocaleString();
     }
-
     updateCounter();
     setInterval(updateCounter, 1000);
 
@@ -176,7 +174,6 @@
       player = new YT.Player('kabloVideo', {
         events: {
           'onReady': function(event) {
-            // ensure video starts muted
             event.target.mute();
           }
         }
@@ -187,21 +184,19 @@
       if (!player) return;
       if (player.isMuted()) {
         player.unMute();
-        // change icon to represent unmuted state
         document.getElementById('soundIcon').innerHTML =
           '<path d="M3 9v6h4l5 5V4L7 9H3z"></path>' +
           '<path d="M14.5 6.5v2.06c1.96.75 3.5 2.79 3.5 5.44s-1.54 4.69-3.5 5.44v2.06c3.14-.98 5.5-3.99 5.5-7.5s-2.36-6.52-5.5-7.5z"></path>' +
           '<path d="M16.5 12c0-1.77-.77-3.37-2-4.47v8.94c1.23-1.1 2-2.7 2-4.47z"></path>';
       } else {
         player.mute();
-        // change icon to represent muted state
         document.getElementById('soundIcon').innerHTML =
           '<path d="M3 9v6h4l5 5V4L7 9H3z"></path>' +
           '<path d="M16.5 12c0-1.77-.77-3.37-2-4.47v8.94c1.23-1.1 2-2.7 2-4.47zM14.5 3.23v2.06c2.89 1.07 5 3.9 5 7.71s-2.11 6.64-5 7.71v2.06c4.01-1.19 7-5 7-9.77s-2.99-8.58-7-9.77z"></path>';
       }
     }
 
-    // Load YouTube IFrame Player API asynchronously
+    // Load YouTube IFrame Player API
     (function() {
       const tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
