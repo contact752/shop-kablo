@@ -59,7 +59,6 @@
       position: relative;
     }
 
-    /* ↓↓↓ Dimmed underline animation ↓↓↓ */
     .underline {
       position: absolute;
       bottom: -5px;
@@ -77,7 +76,6 @@
       90%  { transform: scaleX(1); opacity: 0.75; }
       to   { transform: scaleX(1); opacity: 0.2; }
     }
-    /* ↑↑↑ Dimmed underline animation ↑↑↑ */
 
     .contact {
       font-size: 0.875rem;
@@ -85,22 +83,22 @@
       padding: 0 15px;
     }
 
-    /* speaker icon inside video */
+    /* Clean icon only, no background */
     .sound-toggle {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 50%;
-      padding: 7px;
+      bottom: 12px;
+      right: 12px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: opacity 0.3s ease;
+      opacity: 0.85;
     }
+
     .sound-toggle:hover {
-      background: rgba(0, 0, 0, 0.7);
+      opacity: 1;
     }
+
     .sound-toggle svg {
-      width: 17px; /* 30% smaller than original 24px */
+      width: 17px;
       height: 17px;
       fill: #fff;
     }
@@ -131,9 +129,8 @@
     <!-- Speaker icon for toggling sound -->
     <div class="sound-toggle" onclick="toggleMute()">
       <svg id="soundIcon" viewBox="0 0 24 24" aria-hidden="true">
-        <!-- Default muted icon -->
-        <path d="M3 9v6h4l5 5V4L7 9H3z"></path>
-        <path d="M16.5 12c0-1.77-.77-3.37-2-4.47v8.94c1.23-1.1 2-2.7 2-4.47zM14.5 3.23v2.06c2.89 1.07 5 3.9 5 7.71s-2.11 6.64-5 7.71v2.06c4.01-1.19 7-5 7-9.77s-2.99-8.58-7-9.77z"></path>
+        <!-- Clean muted icon -->
+        <path d="M5 9v6h4l5 5V4l-5 5H5z"></path>
       </svg>
     </div>
   </div>
@@ -172,31 +169,28 @@
     let player;
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('kabloVideo', {
-        events: {
-          'onReady': function(event) {
-            event.target.mute();
-          }
-        }
+        events: { 'onReady': event => event.target.mute() }
       });
     }
 
     function toggleMute() {
       if (!player) return;
+      const icon = document.getElementById('soundIcon');
       if (player.isMuted()) {
         player.unMute();
-        document.getElementById('soundIcon').innerHTML =
-          '<path d="M3 9v6h4l5 5V4L7 9H3z"></path>' +
-          '<path d="M14.5 6.5v2.06c1.96.75 3.5 2.79 3.5 5.44s-1.54 4.69-3.5 5.44v2.06c3.14-.98 5.5-3.99 5.5-7.5s-2.36-6.52-5.5-7.5z"></path>' +
-          '<path d="M16.5 12c0-1.77-.77-3.37-2-4.47v8.94c1.23-1.1 2-2.7 2-4.47z"></path>';
+        icon.innerHTML = `
+          <path d="M5 9v6h4l5 5V4l-5 5H5z"></path>
+          <path d="M16 7c1.66 1.26 2.5 3.02 2.5 5s-.84 3.74-2.5 5"></path>
+          <path d="M19 4c2.76 2.1 4.5 5.02 4.5 8s-1.74 5.9-4.5 8"></path>
+        `;
       } else {
         player.mute();
-        document.getElementById('soundIcon').innerHTML =
-          '<path d="M3 9v6h4l5 5V4L7 9H3z"></path>' +
-          '<path d="M16.5 12c0-1.77-.77-3.37-2-4.47v8.94c1.23-1.1 2-2.7 2-4.47zM14.5 3.23v2.06c2.89 1.07 5 3.9 5 7.71s-2.11 6.64-5 7.71v2.06c4.01-1.19 7-5 7-9.77s-2.99-8.58-7-9.77z"></path>';
+        icon.innerHTML = `
+          <path d="M5 9v6h4l5 5V4l-5 5H5z"></path>
+        `;
       }
     }
 
-    // Load YouTube IFrame Player API
     (function() {
       const tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
